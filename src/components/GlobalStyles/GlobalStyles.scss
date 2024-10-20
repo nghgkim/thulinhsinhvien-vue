@@ -1,0 +1,88 @@
+// @import 'normalize.css';
+
+:root {
+    --primary: #00bf63;
+    --primary-700: #15803d;
+    --primary-200: #bbf7d0;
+    --primary-100: #dcfce7;
+    --primary-500: #22c55e;
+    --secondnary: #f3f5f7;
+    --color-border: #f2f2f2;
+    --color-text: #2c2c2c;
+    --color-text-secondnary: #999999;
+    --color-text-third: #00bf63;
+    --background-color-white: #ffffff;
+    --bg-hover-primary: #dcfce7;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-size: 1rem;
+    font-family: 'Roboto', sans-serif;
+    line-height: 1.5;
+    text-rendering: optimizespeed;
+    overflow-y: overlay;
+}
+
+// Scrollbar CSS
+html *::-webkit-scrollbar {
+    border-radius: 0;
+    width: 8px;
+}
+
+html *::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    background-color: rgba(0, 0, 0, 0.15);
+}
+
+html *::-webkit-scrollbar-track {
+    border-radius: 0;
+    background-color: rgba(0, 0, 0, 0);
+}
+
+button,
+input,
+[tabindex] {
+    outline: none;
+    border: none;
+}
+
+a {
+    text-decoration: none;
+}
+
+// Fonts emmbeded
+
+// Custom tippy tooltip
+body {
+    .tippy-box {
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 1rem;
+        line-height: 1.375rem;
+        background-color: rgba(84, 84, 84, 0.92);
+    }
+
+    .tippy-arrow {
+        color: rgba(84, 84, 84, 0.92);
+    }
+
+    .tippy-content {
+        padding: 8px 9px;
+    }
+
+    .tippy-box[data-placement^='bottom'] > .tippy-arrow:before {
+        top: -8px;
+    }
+}
+
+// Tailwind
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
