@@ -26,13 +26,15 @@
 <script setup>
     import { login } from "../utils/service/audiences.js";
 
-    import { ref } from 'vue';
+    import { ref, inject } from 'vue';
     import { useForm } from 'vee-validate';
     import * as yup from 'yup';
     import CustomInput from './Input/Input.vue';
     import Wrapper from './Wrapper.vue';
     import { useRouter } from 'vue-router';
     import { store } from '../store/index.js'
+
+    const $cookies = inject('$cookies');
 
     const router = useRouter();
     
@@ -59,7 +61,7 @@
             console.log(res);
 
             if (res === true) {
-                store.username = formData.value.username;
+                $cookies.set('username', formData.value.username)
                 router.push({ path: "/" });
             }
         } catch (err) {
