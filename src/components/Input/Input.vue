@@ -16,7 +16,7 @@
     
     const emits = defineEmits(['update:modelValue']);
     
-    const { modelValue } = toRefs(props);
+    // const { modelValue } = toRefs(props);
     
     const visiblePassword = ref(false);
     
@@ -24,10 +24,9 @@
         visiblePassword.value = !visiblePassword.value;
     };
     
-    // Watch for changes to modelValue to emit updates
-    watch(modelValue, (newValue) => {
-        emits('update:modelValue', newValue);
-    });
+    const onInput = (event) => {
+        emits('update:modelValue', event.target.value);
+    };
 </script>
 
 <template>
@@ -39,19 +38,19 @@
             <div class="relative">
             <input
                 :id="name"
-                :name="name"
+                :autocomplete="name"
                 :type="visiblePassword && type === 'password' ? 'text' : type"
                 :placeholder="placeholder"
                 :required="required"
                 :disabled="disabled"
-                v-model="modelValue"
+                :value="modelValue"
+                @input="onInput"
                 :class="[
                 'block w-full rounded-md border border-primary-200',
                 'px-3 py-2 placeholder-gray-400 shadow-sm focus:border-primary-500',
                 'sm:text-sm',
                 error && '!border-red-500',
                 ]"
-                autocomplete="on"
             />
     
             <div
@@ -59,10 +58,10 @@
                 class="absolute right-2 top-[50%] translate-y-[-50%] cursor-pointer"
                 @click="changeVisiblePassord"
             >
-                <font-awesome-icon
-                    :icon="visiblePassword ? ['fas', 'eye'] : ['fas', 'eye-slash']"
-                    :size="18"
-                />
+                <!-- <font-awesome-icon
+                    :icon="visiblePassword? ['fas', 'eye'] : ['fas', 'eye-slash']"
+                    
+                /> -->
             </div>
     
             <div
@@ -73,7 +72,6 @@
             </div>
             </div>
     
-            <!-- Error message -->
             <div v-if="error" class="mt-1 text-sm text-red-500">
                 {{ error }}
             </div>

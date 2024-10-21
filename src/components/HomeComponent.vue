@@ -1,19 +1,23 @@
 <script setup>
 import cx from "classnames";
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import { io } from 'socket.io-client';
+import { store } from '../store/index.js'
+import { getProcess } from "../utils/service/process.js";
+import { sendVoting } from "../utils/service/audiences";
 
 import Button from "../components/Button/Button.vue";
 import Modal from "../components/Modal/Modal.vue";
 
-const socket = io('http://localhost:3001');
-const students = ['Sinh viên 1', 'Sinh viên 2'];
+console.log(store.username)
 
+// const socket = io('http://localhost:3001');
+const students = ref("");
 const currentStudentIndex = ref(0);
 const seconds = ref(30);
 const process = ref(0);
 const isModal = ref(false);
-const vote = ref(true);
+const vote = ref("");
 
 //dunction gọi để chờ bắt đầu bình chọn
 const waitStart = () => {
@@ -33,24 +37,52 @@ const startTimer = () => {
     seconds.value = 30;
 };
 
-const openModal = () => {
+const openModal = (option) => {
     isModal.value = true;
+    vote.value = option;
 };
 
 const closeModal = () => {
     isModal.value = false;
+    vote.value = "";
 };
 
 //hàm sử lý khi bình chọn hoặc không bình chọn
-const handelVote = async (vote) => {
+const handelVote = async () => {
     /**
      *
      * đoạn này dùng để gửi bình chọn tới server
      */
-    vote.value = vote;
+    console.log(vote.value)
+
+    const res = await sendVoting(store.username, students.value, vote.value);
+
     process.value = 2;
     closeModal();
 };
+
+const callProcess = async () => {
+    const res = await getProcess();
+    console.log(res);
+
+    students.value = res.student;
+    
+
+    if (res.isProcessing) {
+        if (process.value !== 2) {
+            process.value = 1;
+            
+        }
+        seconds.value > 0 && seconds.value--;
+    } else {
+        process.value = 0;
+        seconds.value = res.remainingTime;
+    }
+
+}
+
+window.setInterval(callProcess, 1000);
+callProcess();
 </script>
 
 <template>
@@ -60,7 +92,7 @@ const handelVote = async (vote) => {
                 <div
                     class="w-full py-4 flex justify-center font-medium rounded-lg bg-primary-200 flex-1 border border-solid border-primary-500"
                 >
-                    Thí Sinh {{ currentStudentIndex + 1 }}: {{ students[currentStudentIndex] }}
+                    Thí Sinh {{ currentStudentIndex + 1 }}: {{ students }}
                 </div>
                 <div
                     v-if="process !== 0"
@@ -77,14 +109,15 @@ const handelVote = async (vote) => {
                 >
                     <Button
                         large
-                        @click="openModal"
+                        @click="openModal('LIKE')"
                         :class="['w-[200px]', process === 2 && !vote && 'hidden']"
                     >
                         Bình chọn
                     </Button>
                     <Button
                         large
-                        :class="['w-[200px] !bg-red-400', process === 2 && vote && 'hidden']"
+                        @click="openModal('DISLIKE')"
+                        :class="['w-[200px] !bg-red-400', process === 2 && !vote && 'hidden']"
                     >
                         Không bình chọn
                     </Button>
@@ -103,7 +136,7 @@ const handelVote = async (vote) => {
             <div :class="cx('p-4')">
                 <div>Bạn chắc chắn với lựa chọn của mình</div>
                 <div class="flex justify-between mt-8">
-                <Button medium @click="handelVote(vote)">Có</Button>
+                <Button medium @click="handelVote">Có</Button>
                 <Button medium @click="closeModal">Không</Button>
                 </div>
             </div>

@@ -5,9 +5,11 @@ export const publicRoutes = [
   {
     path: '/',
     component: Home,
+    props: true,
   },
   {
     path: '/login',
     component: Login,
+    props: true,
   },
 ];

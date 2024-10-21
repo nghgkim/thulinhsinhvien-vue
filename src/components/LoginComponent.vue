@@ -2,18 +2,16 @@
     <Wrapper>
         <form @submit.prevent="onSubmit">
             <CustomInput
-                v-model="formData.phoneNumber"
-                name="phoneNumber"
+                v-model="formData.username"
+                name="username"
                 label="Tên đăng nhập"
-                type="tel"
-                :error="errors.phoneNumber"
+                type="text"
             />
             <CustomInput
                 v-model="formData.password"
                 name="password"
                 label="Mật Khẩu"
                 type="password"
-                :error="errors.password"
             />
             <button 
                 type="submit"
@@ -26,34 +24,48 @@
 </template>
   
 <script setup>
+    import { login } from "../utils/service/audiences.js";
+
     import { ref } from 'vue';
-    import { z } from 'zod';
-    import { useForm, useField } from 'vee-validate';
+    import { useForm } from 'vee-validate';
     import * as yup from 'yup';
-    import { toTypedSchema } from '@vee-validate/zod';
     import CustomInput from './Input/Input.vue';
     import Wrapper from './Wrapper.vue';
     import { useRouter } from 'vue-router';
+    import { store } from '../store/index.js'
 
     const router = useRouter();
     
     const schema = yup.object({
-        phoneNumber: yup.string().required('Số điện thoại là bắt buộc'),
+        phoneNumber: yup.string().required('Tên đăng nhập là bắt buộc'),
         password: yup.string().required('Mật khẩu là bắt buộc'),
     });
 
-    // Set up form handling with VeeValidate
     const { handleSubmit, errors } = useForm({
         validationSchema: schema,
     });
     
     const formData = ref({
-        phoneNumber: '',
+        username: '',
         password: '',
     });
     
-    const onSubmit = (values) => {
-        console.log(values);
-        router.push({ path: "/" });
+    const onSubmit = async (values) => {
+        console.log(formData.value.username);
+        console.log(formData.value.password);
+        
+        try {
+            const res = await login(formData.value.username, formData.value.password);
+            console.log(res);
+
+            if (res === true) {
+                store.username = formData.value.username;
+                router.push({ path: "/" });
+            }
+        } catch (err) {
+            console.log(err);
+        }
+        
+        
     };
 </script>
