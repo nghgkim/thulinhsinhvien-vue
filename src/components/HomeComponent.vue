@@ -86,6 +86,8 @@ const callProcess = async () => {
     if (res.isProcessing) {
         if (seconds.value === 60) {
             process.value = 0;
+        } else if (seconds.value === 0) {
+            process.value = 2;
         } else {
             if (process.value !== 2) {
                 process.value = 1;
@@ -146,7 +148,7 @@ callProcess();
                 </div>
 
                 <div :class="['flex flex-col gap-8', process !== 2 && 'hidden']">
-                    <div>Cảm ơn bạn đã lựa chọn</div>
+                    <div>Cảm ơn bạn đã bình chọn cho thí sinh</div>
                 </div>
             </div>
         </div>
