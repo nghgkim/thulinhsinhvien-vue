@@ -1,6 +1,6 @@
 <template>
     <Wrapper>
-        <form @submit.prevent="onSubmit">
+        <form @submit.prevent="onSubmit" class="space-y-6 flex-1">
             <CustomInput
                 v-model="formData.username"
                 name="username"
