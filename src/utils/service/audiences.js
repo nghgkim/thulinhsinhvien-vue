@@ -19,7 +19,7 @@ export async function sendVoting(username, thisinh, option) {
     try {
         // Đọc thông tin bình chọn hiện tại của khán giả (là một mảng)
         let voteData = await readData(`accounts/${username}/vote`);
-        const thisinhData = await readData(`examiness/${thisinh}`);
+        const thisinhData = await readData(`examinees/${thisinh}`);
 
         // Nếu voteData chưa có, khởi tạo là một mảng trống
         if (!voteData) {
@@ -38,20 +38,20 @@ export async function sendVoting(username, thisinh, option) {
             await writeData(`audiences/${username}/vote`, voteData);
 
             // Sử dụng transaction để đảm bảo cập nhật an toàn
-            await updateDataWithTransaction(`examiness/${thisinh}/sinhvien/vote`, (currentVotes) => {
+            await updateDataWithTransaction(`examinees/${thisinh}/sinhvien/vote`, (currentVotes) => {
                 return (currentVotes || 0) + 1;
             });
-            await updateDataWithTransaction(`examiness/${thisinh}/totalPoints`, (currentPoint) => {
+            await updateDataWithTransaction(`examinees/${thisinh}/totalPoints`, (currentPoint) => {
                 return (currentPoint || 0) + 0.5;
             });
 
             return { success: true, message: 'Bình chọn thành công!' };
         } else if (option === 'DISLIKE') {
             // Sử dụng transaction để cập nhật số lượng không bình chọn
-            await updateDataWithTransaction(`examiness/${thisinh}/sinhvien/noVote`, (currentNoVotes) => {
+            await updateDataWithTransaction(`examinees/${thisinh}/sinhvien/noVote`, (currentNoVotes) => {
                 return (currentNoVotes || 0) + 1;
             });
-            await updateDataWithTransaction(`examiness/${thisinh}/totalPoints`, (currentPoint) => {
+            await updateDataWithTransaction(`examinees/${thisinh}/totalPoints`, (currentPoint) => {
                 return (currentPoint || 0) - 0.5;
             });
 

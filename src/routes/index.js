@@ -3,12 +3,12 @@ import Login from '../pages/Login/Login.vue';
 
 export const publicRoutes = [
   {
-    path: '/',
+    path: '/binh-chon',
     component: Home,
     props: true,
   },
   {
-    path: '/login',
+    path: '/',
     component: Login,
     props: true,
   },

@@ -62,7 +62,7 @@
 
             if (res === true) {
                 $cookies.set('username', formData.value.username)
-                router.push({ path: "/" });
+                router.push({ path: "/binh-chon" });
             }
         } catch (err) {
             console.log(err);

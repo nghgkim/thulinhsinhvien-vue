@@ -63,16 +63,13 @@ countDown();
 
 //hàm sử lý khi bình chọn hoặc không bình chọn
 const handelVote = async () => {
-    /**
-     *
-     * đoạn này dùng để gửi bình chọn tới server
-     */
-    console.log(vote.value)
-
-    const res = await sendVoting(username, students.value, vote.value);
-
-    process.value = 2;
-    closeModal();
+    try {
+        process.value = 2;
+        const res = await sendVoting(username, students.value, vote.value);
+        await closeModal();
+    } catch (error) {
+        console.error("Error while voting:", error);
+    }
 };
 
 const callProcess = async () => {
@@ -112,7 +109,13 @@ callProcess();
                 <div
                     class="w-full py-4 flex justify-center font-medium rounded-lg bg-primary-200 flex-1 border border-solid border-primary-500"
                 >
-                    Thí Sinh {{ currentStudentIndex + 1 }}: {{ students }}
+                    <span v-if="students === 'hoaikhanh'">Thí Sinh 1: Hoài Khánh</span>
+                    <span v-else-if="students === 'haiyen'">Thí Sinh 2: Hải Yến</span>
+                    <span v-else-if="students === 'dinhphong'">Thí Sinh 3: Đình Phong</span>
+                    <span v-else-if="students === 'hoainam'">Thí Sinh 4: Hoài Nam</span>
+                    <span v-else-if="students === 'thaovi'">Thí Sinh 5: Thảo Vi</span>
+                    <span v-else-if="students === 'ngocquy'">Thí Sinh 6: Ngọc Quý</span>
+                    <span v-else="students === 'ngocquy'">Lượt bình chọn chưa bắt đầu</span>
                 </div>
                 <div
                     v-if="process !== 0"
