@@ -5,7 +5,7 @@ export async function login(username, password) {
   try {
     const account = await readData(`accounts/${username}`);
     if (account && account.password == password) {
-      await writeData(`${username}/isActive`, true);
+      await writeData(`accounts/${username}/isActive`, true);
       return true;
     }
     return false;
