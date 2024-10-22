@@ -3,9 +3,9 @@ import { readData, updateDataWithTransaction, writeData } from "../firebase";
 // Gọi hàm này để kiểm tra xem tài khoản tồn tại không
 export async function login(username, password) {
   try {
-    const account = await readData(`accounts/${username}`);
-    if (account && account.password == password) {
-      await writeData(`accounts/${username}/isActive`, true);
+    const account = await readData(`audiences/${username}`);
+    if (account && account.password == password && account.isActive == false) {
+      await writeData(`audiences/${username}/isActive`, true);
       return true;
     }
     return false;

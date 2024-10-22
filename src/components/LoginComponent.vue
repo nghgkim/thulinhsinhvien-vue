@@ -64,6 +64,9 @@
                 $cookies.set('username', formData.value.username)
                 router.push({ path: "/binh-chon" });
             }
+            else {
+                alert("Tên đăng nhập hoặc mật khẩu không đúng")
+            }
         } catch (err) {
             console.log(err);
         }
