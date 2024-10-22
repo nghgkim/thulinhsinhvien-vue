@@ -32,7 +32,7 @@ export async function sendVoting(username, thisinh, option) {
     if (option === "LIKE") {
       voteData.push(thisinh);
       await writeData(`audiences/${username}/like`, voteData);
-
+      await writeData(`audiences/${username}/voted/${thisinh}`, true);
       // Sử dụng transaction để đảm bảo cập nhật an toàn
       await updateDataWithTransaction(
         `examinees/${thisinh}/chandungthulinh/sinhvien/vote`,
@@ -43,6 +43,7 @@ export async function sendVoting(username, thisinh, option) {
 
       return { success: true, message: "Bình chọn thành công!" };
     } else if (option === "DISLIKE") {
+       await writeData(`audiences/${username}/voted/${thisinh}`, true)
       // Sử dụng transaction để cập nhật số lượng không bình chọn
       await updateDataWithTransaction(
         `examinees/${thisinh}/sinhvien/noVote`,
