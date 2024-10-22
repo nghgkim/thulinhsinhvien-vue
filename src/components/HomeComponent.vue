@@ -109,7 +109,7 @@ callProcess();
                 <div
                     class="w-full py-4 flex justify-center font-medium rounded-lg bg-primary-200 flex-1 border border-solid border-primary-500"
                 >
-                    <span v-if="students === 'hoaikhanh'">Thí Sinh 1: Hoài Khánh</span>
+                    <span v-if="students === 'hoaikhanh'">Thí Sinh 1: Hoài Khanh</span>
                     <span v-else-if="students === 'haiyen'">Thí Sinh 2: Hải Yến</span>
                     <span v-else-if="students === 'dinhphong'">Thí Sinh 3: Đình Phong</span>
                     <span v-else-if="students === 'hoainam'">Thí Sinh 4: Hoài Nam</span>
